@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.UserDao">
+  <resultMap id="UserMap" type="com.sino.pojo.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="user_id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="tjdw" jdbcType="VARCHAR" property="tjdw" />
+    <result column="disname" jdbcType="VARCHAR" property="disname" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="times" jdbcType="TIMESTAMP" property="times" />
+    <result column="opreator" jdbcType="VARCHAR" property="operator" />
+    <result column="dept_name" jdbcType="VARCHAR" property="dept_name" />
+    <result column="operat_time" jdbcType="TIMESTAMP" property="operat_time" />
+    <result column="is_del" jdbcType="INTEGER" property="is_del" />
+    <result column="role_id" jdbcType="VARCHAR" property="role_id" />    
+    <result column="reject_reason" jdbcType="VARCHAR" property="reject_reason" /> 
+    <result column="user_type" jdbcType="INTEGER" property="user_type" /> 
+  </resultMap>
+  <sql id="Base_user_column">
+  id,user_id,name,password,tjdw,disname,phone,tel,email,status,times,operator,dept_name,operat_time
+  ,is_del,reject_reason,user_type
+  </sql>
+  <select id="queryUserByUserNameAndPass" resultMap="UserMap">
+    select 
+   <include refid="Base_user_column" />
+    from SYS_USER  where name = #{name} and password =#{password}
+  	and status=#{status} and is_del=0
+  </select>
+   <select id="queryUserByUserTypeAndStatus" resultMap="UserMap">
+    select 
+     <include refid="Base_user_column" />
+    from SYS_USER where user_type=#{user_type} 
+  	and status=#{status} and is_del=0
+  </select>
+  <insert id="addUser" parameterType="com.sino.pojo.User" >     
+      insert into SYS_USER (user_id,name,password,tjdw,disname,phone,tel,email,status,times,operator,reject_reason,
+      dept_name,operat_time,is_del,user_type) values(#{user_id},#{name},#{password},#{tjdw},#{disname},#{phone},
+      #{tel},#{email},#{status},#{times},#{operator},#{reject_reason},#{dept_name},#{operat_time},#{is_del},#{user_type})  
+  </insert>
+  <select id="queryUserHasApprovedByTjdw"  resultMap="UserMap">
+      select 
+  		     <include refid="Base_user_column" />
+    from SYS_USER where tjdw = #{tjdw} and status in(1,2) and user_type=#{user_type}
+	  <if test="times !=null and times.length>0 ">  
+       and  DATE_FORMAT(times,'%Y') in 
+       <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+  		#{item}  
+	   </foreach>
+	 </if>
+     <if test="name !=null and name !='' ">  
+       and  name = #{name}
+ 	 </if>
+ 	  <if test="dept_name !=null and dept_name !='' ">  
+       and  dept_name like concat(concat('%',#{dept_name}),'%') 
+ 	 </if>
+ 	<if test="disname !=null and disname !='' ">  
+       and  disname like concat(concat('%',#{disname}),'%') 
+ 	 </if>
+ 	  <if test="email !=null and email !='' ">  
+       and  email = #{email}
+ 	 </if>
+ 	 <if test="phone !=null and phone !='' ">  
+       and  phone = #{phone}
+ 	 </if>
+ 	  <if test="tel !=null and tel !='' ">  
+       and  tel = #{tel}
+ 	 </if>
+ 	  <if test="status !=null and status !='' ">  
+       and  status = #{status}
+ 	 </if>
+  </select>
+  <select id="queryUserHasApprovedCount"  resultType="java.lang.Integer">
+      select 
+  		   count(1)
+    from SYS_USER where tjdw = #{tjdw} and status in(1,2) and user_type=#{user_type}
+	  <if test="times !=null and times.length>0 ">  
+       and  DATE_FORMAT(times,'%Y') in 
+       <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+  		#{item}  
+	   </foreach>
+	 </if>
+     <if test="name !=null and name !='' ">  
+       and  name = #{name}
+ 	 </if>
+ 	  <if test="dept_name !=null and dept_name !='' ">  
+       and  dept_name like concat(concat('%',#{dept_name}),'%') 
+ 	 </if>
+ 	<if test="disname !=null and disname !='' ">  
+       and  disname like concat(concat('%',#{disname}),'%') 
+ 	 </if>
+ 	  <if test="email !=null and email !='' ">  
+       and  email = #{email}
+ 	 </if>
+ 	 <if test="phone !=null and phone !='' ">  
+       and  phone = #{phone}
+ 	 </if>
+ 	  <if test="tel !=null and tel !='' ">  
+       and  tel = #{tel}
+ 	 </if>
+ 	  <if test="status !=null and status !='' ">  
+       and  status = #{status}
+ 	 </if>
+  </select>
+    <select id="queryUserHasNotApprovedByTjdw"  resultMap="UserMap">
+      select 
+  		     <include refid="Base_user_column" />
+    from SYS_USER where tjdw = #{tjdw} and status =0 and user_type=#{user_type} and is_del=0
+       <if test="times !=null and times.length>0 ">  
+       and  DATE_FORMAT(times,'%Y') in 
+       <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+  		#{item}  
+	   </foreach>
+	 </if>
+     <if test="name !=null and name !='' ">  
+       and  name = #{name}
+ 	 </if>
+ 	  <if test="dept_name !=null and dept_name !='' ">  
+       and  dept_name like concat(concat('%',#{dept_name}),'%') 
+ 	 </if>
+ 	  	<if test="disname !=null and disname !='' ">  
+       and  disname like concat(concat('%',#{disname}),'%') 
+ 	 </if>
+ 	  <if test="email !=null and email !='' ">  
+       and  email = #{email}
+ 	 </if>
+ 	 <if test="phone !=null and phone !='' ">  
+       and  phone = #{phone}
+ 	 </if>
+ 	  <if test="tel !=null and tel !='' ">  
+       and  tel = #{tel}
+ 	 </if>
+ 	  <if test="status !=null and status !='' ">  
+       and  status = #{status}
+ 	 </if>
+  </select>
+  <select id="queryUserIsExist"  resultType="java.lang.Integer">
+      select 
+  		    count(1)
+      from SYS_USER where 1=1
+      <if test="name !=null and name !='' ">  
+       and  name = #{name}
+ 	 </if>
+ 	  <if test="disname !=null and disname !='' ">  
+       and  disname = #{disname}
+ 	 </if>
+ 	  <if test="email !=null and email !='' ">  
+       and  email = #{email}
+ 	 </if>
+ 	 <if test="phone !=null and phone !='' ">  
+       and  phone = #{phone}
+ 	 </if>
+  </select>
+  <update id="updateStatusByName" parameterType="com.sino.pojo.User" >
+   update SYS_USER
+   set status=#{status}
+    <if test="reject_reason !=null and reject_reason !='' ">  
+         , reject_reason = #{reject_reason}
+ 	 </if>	    
+       ,  operator = #{operator} , operat_time = #{operat_time}
+
+   where name = #{name}
+  </update>
+  <update id="updatePass" parameterType="com.sino.pojo.User">
+  update SYS_USER set password=#{password}, operat_time = #{operat_time},  operator = #{operator} where name=#{name}
+  </update>
+  <update id="deleteUser">
+  		update SYS_USER set is_del=1 where name in
+       <foreach item="item" index="index" collection="name" open="(" separator="," close=")">  
+  		#{item}  
+	   </foreach>
+  </update>
+  <update id="updateUserInfo">
+  update SYS_USER
+   <trim prefix="set" suffixOverrides=",">	 
+ 	 <if test="disname!=null">disname=#{disname},</if>
+ 	 <if test="password!=null">password=#{password},</if>
+ 	 <if test="phone!=null">phone=#{phone},</if>
+  	 <if test="email!=null">email=#{email},</if>
+  	 <if test="operator!=null">operator=#{operator},</if>
+  	 <if test="operat_time!=null">operat_time=#{operat_time},</if>  	
+ 	</trim> 	  
+ 	 where name=#{name} 	                    
+  </update>
+  
+  <!-- 登录方法，查询专家用户名密码是否匹配 -->
+  <select id="queryUserAsExpert" resultMap="UserMap">
+    SELECT
+    	eu.EXPERT_ID AS "user_id",
+		ei. NAME AS "disname",
+		ei.phone,
+		ei.email,
+		'4' AS "user_type"
+	FROM
+		EXPERT_USER eu
+	LEFT JOIN EXPERT_INFO ei ON eu.EXPERT_ID = ei.ID
+	WHERE
+		eu. NAME = #{name}
+	AND eu. PASSWORD = #{password}
+	AND eu.IS_DEL = 0
+	AND ei.IS_DEL = 0
+  </select>
+  <select id="queryUserInfoCount" parameterType="java.util.HashMap"  resultType="java.lang.Integer">
+  	select count(1) from SYS_USER where 1=1
+  	<if test="phone !=null and phone !='' ">
+  		and phone=#{phone}
+  	</if>
+  	<if test="email !=null and email!='' ">
+  		and email=#{email}
+  	</if>
+  </select>
+</mapper>

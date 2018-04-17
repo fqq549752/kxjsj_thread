@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrCompanyDao">
+  <resultMap id="CompanyMap" type="com.sino.pojo.Company">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="project_id" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="ranking" jdbcType="INTEGER" property="ranking" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="contact_person" jdbcType="VARCHAR" property="contact_person" />
+    <result column="contact_phone" jdbcType="VARCHAR" property="contact_phone" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="contribution" jdbcType="VARCHAR" property="contribution" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operat_time" jdbcType="TIMESTAMP" property="operat_time" />    
+    <result column="times" jdbcType="TIMESTAMP" property="times" />    
+    <result column="is_del" jdbcType="INTEGER" property="is_del" />    
+   </resultMap>
+  <insert id="insert" parameterType="com.sino.pojo.Company" >     
+	 insert into PR_COMPANY
+	 (project_id,sort,name,ranking,location,address,contact_person,contact_phone,fax,telphone,postcode
+	 ,email,contribution,operator,operat_time,times,is_del)
+	 values
+	 (#{project_id},#{sort},#{name},#{ranking},#{location},#{address},#{contact_person},#{contact_phone},
+	 #{fax},#{telphone},#{postcode},#{email},#{contribution},#{operator},#{operat_time},#{times},#{is_del})	
+  </insert>
+  
+  <select id="queryByProjectId" resultType="java.util.HashMap" parameterType="java.lang.String">
+  select id,project_id,sort,name,ranking,location,address,contact_person,contact_phone,fax,telphone,postcode
+	 ,email,contribution,operator,operat_time,times,is_del
+  from PR_COMPANY where project_id = #{project_id} and is_del=0 order by ranking asc
+  </select>
+  <select id="queryByProjectIdAndName" resultMap="CompanyMap" parameterType="com.sino.pojo.Company">
+  select id,project_id,sort,name,ranking,location,address,contact_person,contact_phone,fax,telphone,postcode
+	 ,email,contribution,operator,operat_time,times,is_del
+  from PR_COMPANY where project_id = #{project_id} and name=#{name} and is_del=0 order by ranking asc
+  </select>
+   <delete id="deleteComp" parameterType="com.sino.pojo.Company">
+   delete from PR_COMPANY where project_id = #{project_id} and name=#{name}
+   </delete>
+   
+   <update id="updateSortInfo"  parameterType="com.sino.pojo.Company">
+     update PR_COMPANY set ranking=#{ranking} where project_id = #{project_id} and name=#{name}  
+   </update>
+    <update id="deleteFake"  parameterType="com.sino.pojo.Company">
+     update PR_COMPANY set is_del=#{is_del} where project_id = #{project_id} 
+   </update>
+</mapper>

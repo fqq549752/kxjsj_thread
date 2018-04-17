@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrWordProceDureDao">
+	<resultMap id="WordProcedureMap" type="com.sino.pojo.PrWordProcedure">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="project_id" jdbcType="VARCHAR" property="project_id" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="pr_status" jdbcType="INTEGER" property="pr_status" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="word_path" jdbcType="VARCHAR" property="word_path" />
+		<result column="pdf_path" jdbcType="VARCHAR" property="pdf_path" />
+		<result column="ex_word_path" jdbcType="VARCHAR" property="ex_word_path" />
+		<result column="ex_pdf_path" jdbcType="VARCHAR" property="ex_pdf_path" />
+		<result column="is_flag" jdbcType="INTEGER" property="is_flag" />
+		<result column="error_log" jdbcType="VARCHAR" property="error_log" />
+		<result column="insert_time" jdbcType="TIMESTAMP" property="insert_time" />
+		<result column="operate_time" jdbcType="TIMESTAMP" property="operate_time" />
+	</resultMap>
+
+
+	<select id="findPrWord" resultMap="WordProcedureMap">
+		select
+		id,project_id,type,pr_status,file_status,file_status,status,word_path,pdf_path,is_flag,error_log,insert_time,operate_time
+		from PR_WORD_PROCEDURE
+		WHERE PR_STATUS!=FILE_STATUS and status!=1 order by
+		insert_time asc
+	</select>
+	<update id="updateStatus" parameterType="com.sino.pojo.PrWordProcedure">
+		update PR_WORD_PROCEDURE
+		set status=#{status},operate_time=#{operate_time}
+		where id=#{id}
+	</update>
+	<update id="updatePath" parameterType="com.sino.pojo.PrWordProcedure">
+		update PR_WORD_PROCEDURE
+		<trim prefix="set" suffixOverrides=",">
+			<if test="file_status!=null">file_status=#{file_status},</if>			
+			<if test="status!=null">status=#{status},</if>
+			<if test="word_path!=null">word_path=#{word_path},</if>
+			<if test="pdf_path!=null">pdf_path=#{pdf_path},</if>
+			<if test="ex_word_path!=null">ex_word_path=#{ex_word_path},</if>
+			<if test="ex_pdf_path!=null">ex_pdf_path=#{ex_pdf_path},</if>
+			<if test="operate_time!=null">operate_time=#{operate_time},</if>
+			<if test="trans_time!=null">trans_time=#{trans_time},</if>
+			<if test="file_length!=null">file_length=#{file_length},</if>
+			<if test="is_flag!=null">is_flag=#{is_flag},</if>
+			<if test="error_log!=null">error_log=#{error_log},</if>
+		</trim>
+		where id=#{id}
+	</update>
+	<select id="findInfoByProjectId" resultMap="WordProcedureMap"
+		parameterType="java.lang.String">
+		select
+		id,project_id,type,pr_status,file_status,status,word_path,ex_word_path,pdf_path,ex_pdf_path,is_flag,error_log,insert_time,operate_time
+		from PR_WORD_PROCEDURE
+		WHERE project_id = #{project_id} order by type
+		asc
+	</select>
+
+	<select id="findById" resultMap="WordProcedureMap"
+		parameterType="java.lang.Integer">
+		select
+		id,project_id,type,pr_status,file_status,status,word_path,ex_word_path,pdf_path,ex_pdf_path,is_flag,error_log,insert_time,operate_time
+		from PR_WORD_PROCEDURE
+		WHERE id = #{id}		
+	</select>
+</mapper>

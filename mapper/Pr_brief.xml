@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrBriefDao">
+  <resultMap id="briefMap" type="com.sino.pojo.PrBrief">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="project_id" />
+    <result column="brief" jdbcType="VARCHAR" property="brief" /> 
+    <result column="background" jdbcType="VARCHAR" property="background" /> 
+    <result column="tech" jdbcType="VARCHAR" property="tech" /> 
+    <result column="innovate" jdbcType="VARCHAR" property="innovate" /> 
+    <result column="compare" jdbcType="VARCHAR" property="compare" /> 
+    <result column="application" jdbcType="VARCHAR" property="application" /> 
+   </resultMap>
+  <insert id="insert" parameterType="com.sino.pojo.PrDecunitView" >     
+	 insert into PR_BRIEF
+	 (project_id,brief,background,tech,innovate,compare,application)
+	 values
+	 (#{project_id},#{brief},#{background},#{tech},#{innovate},#{compare},#{application})	
+  </insert>
+  <update id="update">
+   update PR_BRIEF
+ 	 <trim prefix="set" suffixOverrides=",">	 
+ 	 <if test="brief!=null">brief=#{brief},</if>
+ 	 <if test="background!=null">background=#{background},</if>
+ 	 <if test="tech!=null">tech=#{tech},</if>
+ 	 <if test="innovate!=null">innovate=#{innovate},</if>
+  	<if test="compare!=null">compare=#{compare},</if>
+  	<if test="application!=null">application=#{application},</if>  	
+ 	</trim> 	  
+ 	 where project_id=#{project_id} 
+  </update>
+ 
+  <select id="queryCount" resultType="java.lang.Integer">
+  select count(1) from PR_BRIEF where project_id =#{project_id} and is_del=0
+  </select>
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrTotalEnclosureDao">
+	<resultMap id="TotalEnclosureMap" type="com.sino.pojo.TotalEnclosure">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="project_id" jdbcType="VARCHAR" property="project_id" />
+		<result column="word_path" jdbcType="VARCHAR" property="word_path" />
+		<result column="pdf_path" jdbcType="VARCHAR" property="pdf_path" />
+		<result column="ex_pdf_path" jdbcType="VARCHAR" property="ex_pdf_path" />
+		<result column="zip_path" jdbcType="VARCHAR" property="zip_path" />
+		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="times" jdbcType="TIMESTAMP" property="times" />
+		<result column="is_del" jdbcType="VARCHAR" property="is_del" />
+	</resultMap>
+	<insert id="insert" parameterType="com.sino.pojo.PrEnclosure">
+		insert into PR_TOTAL_ENCLOSURE
+		(project_id,word_path,pdf_path,ex_pdf_path,zip_path,operator,times,is_del)
+		values
+		(#{project_id},#{word_path},#{pdf_path},#{ex_pdf_path},#{zip_path},#{operator},#{times},#{is_del})
+	</insert>
+
+	<select id="queryAllByProjectId" parameterType="java.lang.String"
+		resultMap="TotalEnclosureMap">
+		select
+		id,project_id,word_path,pdf_path,ex_pdf_path,zip_path,operator,times,is_del
+		from PR_TOTAL_ENCLOSURE where project_id =#{project_id} and is_del=0
+	</select>
+	<update id="deleteFake">
+		update PR_TOTAL_ENCLOSURE set is_del =#{is_del} where
+		project_id=#{project_id}
+	</update>
+	<delete id="deleteTotalEnclosure" parameterType="java.lang.String">
+		delete from PR_TOTAL_ENCLOSURE where project_id =#{project_id}
+	</delete>
+
+</mapper>

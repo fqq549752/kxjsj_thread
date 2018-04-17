@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrInfoDao">
+	<resultMap id="PrInfoMap" type="com.sino.pojo.PrInfo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="project_id" jdbcType="VARCHAR" property="project_id" />
+		<result column="project_num" jdbcType="VARCHAR" property="project_num" />
+		<result column="version" jdbcType="VARCHAR" property="version" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="dept" jdbcType="VARCHAR" property="dept" />
+		<result column="person" jdbcType="VARCHAR" property="person" />
+		<result column="charger" jdbcType="VARCHAR" property="charger" />
+		<result column="charger_phone" jdbcType="VARCHAR" property="charger_phone" />
+		<result column="charger_tel" jdbcType="VARCHAR" property="charger_tel" />
+		<result column="charger_email" jdbcType="VARCHAR" property="charger_email" />
+		<result column="charger_address" jdbcType="VARCHAR" property="charger_address" />
+		<result column="theme" jdbcType="VARCHAR" property="theme" />
+		<result column="plan_fund_name" jdbcType="VARCHAR" property="plan_fund_name" />
+		<result column="plan_fund_code" jdbcType="VARCHAR" property="plan_fund_code" />
+		<result column="sb_grade" jdbcType="VARCHAR" property="sb_grade" />
+		<result column="tj_grade" jdbcType="VARCHAR" property="tj_grade" />
+		<result column="sb_time" jdbcType="TIMESTAMP" property="sb_time" />
+		<result column="sb_type" jdbcType="VARCHAR" property="sb_type" />
+		<result column="economic_type" jdbcType="VARCHAR" property="economic_type" />
+		<result column="task" jdbcType="VARCHAR" property="task" />
+		<result column="project_status" jdbcType="VARCHAR" property="project_status" />
+		<result column="fallback" jdbcType="VARCHAR" property="fallback" />
+		<result column="wp_group" jdbcType="VARCHAR" property="wp_group" />
+		<result column="ys_group" jdbcType="VARCHAR" property="ys_group" />
+		<result column="es_group" jdbcType="VARCHAR" property="es_group" />
+		<result column="result" jdbcType="VARCHAR" property="result" />
+		<result column="start_time" jdbcType="TIMESTAMP" property="start_time" />
+		<result column="end_time" jdbcType="TIMESTAMP" property="end_time" />
+		<result column="sb_dept" jdbcType="VARCHAR" property="sb_dept" />
+		<result column="tj_dept" jdbcType="VARCHAR" property="tj_dept" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+		<result column="pdf_time" jdbcType="TIMESTAMP" property="pdf_time" />		
+		<result column="is_del" jdbcType="INTEGER" property="is_del" />
+	</resultMap>
+	<insert id="insert" parameterType="com.sino.pojo.PrInfo">
+		insert into
+		PR_INFO
+		(project_id,project_num,version,name,dept,person,charger,charger_phone,charger_tel,charger_email,
+		charger_address,theme,plan_fund_name,plan_fund_code,sb_grade,tj_grade,sb_time,sb_type,economic_type,task,project_status,fallback,wp_group,ys_group,
+		es_group,result,start_time,end_time,sb_dept,tj_dept,update_time,pdf_time,is_del)
+		values(#{project_id},#{project_num},#{version},#{name},#{dept},#{person},#{charger},#{charger_phone},#{charger_tel},
+		#{charger_email},#{charger_address},#{theme},#{plan_fund_name},#{plan_fund_code},#{sb_grade},#{tj_grade},#{sb_time},#{sb_type},#{economic_type},
+		#{task},#{project_status},#{fallback},#{wp_group},#{ys_group},#{es_group},#{result},#{start_time},#{end_time},#{sb_dept},#{tj_dept},#{update_time},#{pdf_time},#{is_del})
+	</insert>
+
+	<update id="updateBaseInfo" parameterType="com.sino.pojo.PrInfo">
+		update PR_INFO
+		<trim prefix="set" suffixOverrides=",">
+			<if test="sb_type!=null">sb_type=#{sb_type},</if>
+			<if test="name!=null">name=#{name},</if>
+			<if test="sb_grade!=null">sb_grade=#{sb_grade},</if>
+			<if test="tj_grade!=null">tj_grade=#{tj_grade},</if>
+			<if test="fallback!=null">fallback=#{fallback},</if>			
+			<if test="economic_type!=null">economic_type=#{economic_type},</if>
+			<if test="task!=null">task=#{task},</if>
+			<if test="theme!=null">theme=#{theme},</if>
+			<if test="person!=null">person=#{person},</if>
+			<if test="dept!=null">dept=#{dept},</if>
+			<if test="start_time!=null">start_time=#{start_time},</if>
+			<if test="end_time!=null">end_time=#{end_time},</if>
+			<if test="plan_fund_name!=null">plan_fund_name=#{plan_fund_name},</if>
+			<if test="plan_fund_code!=null">plan_fund_code=#{plan_fund_code},</if>
+			<if test="sb_dept!=null">sb_dept=#{sb_dept},</if>
+			<if test="charger!=null">charger=#{charger},</if>
+			<if test="charger_phone!=null">charger_phone=#{charger_phone},</if>
+			<if test="charger_tel!=null">charger_tel=#{charger_tel},</if>
+			<if test="charger_email!=null">charger_email=#{charger_email},</if>
+			<if test="charger_address!=null">charger_address=#{charger_address},</if>
+			<if test="sb_dept!=null">sb_dept=#{sb_dept},</if>
+			<if test="tj_dept!=null">tj_dept=#{tj_dept},</if>
+			<if test="project_num!=null">project_num=#{project_num},</if>
+			<if test="version!=null">version=#{version},</if>
+			<if test="project_status!=null">project_status=#{project_status},</if>
+			<if test="update_time!=null">update_time=#{update_time},</if>
+			<if test="pdf_time!=null">pdf_time=#{pdf_time},</if>
+
+		</trim>
+		where project_id=#{project_id}
+	</update>
+	<select id="query" resultMap="PrInfoMap">
+		select
+		id,project_id,project_num,version,name,dept,person,charger,charger_phone,charger_tel,charger_email,
+		charger_address,theme,plan_fund_name,plan_fund_code,sb_grade,tj_grade,sb_time,sb_type,economic_type,task,project_status,fallback,wp_group,ys_group,
+		es_group,result,start_time,end_time,sb_dept,update_time,pdf_time,is_del from PR_INFO
+		where is_del=0
+		<if test="project_id !=null and project_id !='' ">
+			and project_id = #{project_id}
+		</if>
+		<if test="tj_grade !=null and tj_grade !='' ">
+			and tj_grade in
+			<foreach item="item" index="index" collection="tj_grade"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+
+		<if test="result !=null and result.length>0 ">
+			and result in
+			<foreach item="item" index="index" collection="result" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+
+		</if>
+
+		<if test="sb_dept !=null and sb_dept!='' ">
+			and sb_dept like concat(concat('%',#{sb_dept}),'%')
+		</if>
+		<if test="sb_time !=null and sb_time.length>0 ">
+			and DATE_FORMAT(sb_time,'%Y') in
+			<foreach item="item" index="index" collection="sb_time" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="project_status !=null and project_status.length>0 ">
+			and project_status in
+			<foreach item="item" index="index" collection="project_status"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="ex_project_status !=null and ex_project_status.length>0 ">
+			and project_status not in
+			<foreach item="item" index="index" collection="ex_project_status"
+				open="(" separator="," close=")">
+				#{item}
+		</foreach>
+		</if>
+		<if test="charger !=null and charger !='' ">
+			and charger like concat(concat('%',#{charger}),'%')
+		</if>
+		<if test="person !=null and person !='' ">
+			and person like concat(concat('%',#{person}),'%')
+		</if>
+		<if test="name !=null and name !='' ">
+			and name like concat(concat('%',#{name}),'%')
+		</if>
+		<if test="sb_grade !=null and sb_grade.length>0 ">
+			and sb_grade in
+			<foreach item="item" index="index" collection="sb_grade"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="sb_type !=null and sb_type.length>0 ">
+			and sb_type in
+			<foreach item="item" index="index" collection="sb_type" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="task !=null and task.length>0 ">
+			and task in
+			<foreach item="item" index="index" collection="task" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="economic_type !=null and economic_type.length>0 ">
+			and economic_type in
+			<foreach item="item" index="index" collection="economic_type"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="theme !=null and theme !='' ">
+			and theme like concat(concat('%',#{theme}),'%')
+		</if>
+		<if test="charger_phone !=null and charger_phone !='' ">
+			and charger_phone like concat(concat('%',#{charger_phone}),'%')
+		</if>
+		<if test="charger_tel !=null and charger_tel !='' ">
+			and charger_tel like concat(concat('%',#{charger_tel}),'%')
+		</if>
+		<if test="charger_email !=null and charger_email !='' ">
+			and charger_email like concat(concat('%',#{charger_email}),'%')
+		</if>
+		<if test="tj_dept !=null and tj_dept !='' ">
+			and tj_dept = #{tj_dept}
+		</if>
+		order by id desc
+	</select>
+	<select id="queryByProjectId" resultType="java.util.HashMap">
+		select
+		id,project_id,project_num,version,name,dept,person,charger,charger_phone,charger_tel,charger_email,
+		charger_address,theme,plan_fund_name,plan_fund_code,sb_grade,tj_grade,sb_time,sb_type,economic_type,task,project_status,fallback,wp_group,ys_group,
+		es_group,result,start_time,end_time,sb_dept,tj_dept,is_del,update_time,pdf_time from PR_INFO
+		where project_id = #{project_id} and is_del=0
+	</select>
+	<update id="deleteFake">
+		update PR_INFO set is_del=#{is_del} where project_id = #{project_id}
+	</update>
+
+	<select id="queryProCount" resultType="java.lang.Integer">
+		select
+		count(1)
+		from PR_INFO
+		where is_del=0
+		<if test="project_id !=null and project_id !='' ">
+			and project_id = #{project_id}
+		</if>
+		<if test="tj_grade !=null and tj_grade !='' ">
+			and tj_grade in
+			<foreach item="item" index="index" collection="tj_grade"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+
+		<if test="result !=null and result.length>0 ">
+			and result in
+			<foreach item="item" index="index" collection="result" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+
+		</if>
+
+		<if test="sb_dept !=null and sb_dept!='' ">
+			and sb_dept like concat(concat('%',#{sb_dept}),'%')
+		</if>
+		<if test="sb_time !=null and sb_time.length>0 ">
+			and DATE_FORMAT(sb_time,'%Y') in
+			<foreach item="item" index="index" collection="sb_time" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="project_status !=null and project_status.length>0 ">
+			and project_status in
+			<foreach item="item" index="index" collection="project_status"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="charger !=null and charger !='' ">
+			and charger like concat(concat('%',#{charger}),'%')
+		</if>
+		<if test="person !=null and person !='' ">
+			and person like concat(concat('%',#{person}),'%')
+		</if>
+		<if test="name !=null and name !='' ">
+			and name like concat(concat('%',#{name}),'%')
+		</if>
+		<if test="sb_grade !=null and sb_grade.length>0 ">
+			and sb_grade in
+			<foreach item="item" index="index" collection="sb_grade"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="sb_type !=null and sb_type.length>0 ">
+			and sb_type in
+			<foreach item="item" index="index" collection="sb_type" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="task !=null and task.length>0 ">
+			and task in
+			<foreach item="item" index="index" collection="task" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="economic_type !=null and economic_type.length>0 ">
+			and economic_type in
+			<foreach item="item" index="index" collection="economic_type"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="theme !=null and theme !='' ">
+			and theme like concat(concat('%',#{theme}),'%')
+		</if>
+		<if test="charger_phone !=null and charger_phone !='' ">
+			and charger_phone like concat(concat('%',#{charger_phone}),'%')
+		</if>
+		<if test="charger_tel !=null and charger_tel !='' ">
+			and charger_tel like concat(concat('%',#{charger_tel}),'%')
+		</if>
+		<if test="charger_email !=null and charger_email !='' ">
+			and charger_email like concat(concat('%',#{charger_email}),'%')
+		</if>
+		<if test="tj_dept !=null and tj_dept !='' ">
+			and tj_dept = #{tj_dept}
+		</if>
+
+	</select>
+	<select id="queryPrInfoByProjectId" resultMap="PrInfoMap">
+		select
+		id,project_id,project_num,version,name,dept,person,charger,charger_phone,charger_tel,charger_email,
+		charger_address,theme,plan_fund_name,plan_fund_code,sb_grade,tj_grade,sb_time,sb_type,economic_type,task,project_status,fallback,wp_group,ys_group,
+		es_group,result,start_time,end_time,sb_dept,is_del,update_time,pdf_time from PR_INFO
+		where project_id = #{project_id} and is_del=0
+	</select>
+</mapper>

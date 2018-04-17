@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrParticipantBaseDao">
+  <resultMap id="ParticipantBaseInfoMap" type="com.sino.pojo.Participant">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="duties" jdbcType="VARCHAR" property="duties" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="major" jdbcType="VARCHAR" property="major" />
+    <result column="work" jdbcType="VARCHAR" property="work" />
+    <result column="specialty" jdbcType="VARCHAR" property="specialty" />    
+    <result column="address" jdbcType="VARCHAR" property="address" />    
+    <result column="degree" jdbcType="VARCHAR" property="degree" />    
+    <result column="email" jdbcType="VARCHAR" property="email" />    
+    <result column="school" jdbcType="VARCHAR" property="school" />    
+    <result column="graduation" jdbcType="TIMESTAMP" property="graduation" />    
+    <result column="awards" jdbcType="VARCHAR" property="awards" />       
+    <result column="operator" jdbcType="VARCHAR" property="operator" />    
+    <result column="operat_time" jdbcType="TIMESTAMP" property="operat_time" />
+     <result column="times" jdbcType="TIMESTAMP" property="times" />
+     <result column="is_del" jdbcType="INTEGER" property="is_del" />   
+  </resultMap>
+  <insert id="insert" parameterType="com.sino.pojo.Participant" >     
+	insert into PR_BASE_PARTICIPANT
+	(idcard,name,sort,birthday,sex,nation,unit,duties,title,tel,telphone,major,work,
+	specialty,address,degree,email,school,graduation,awards,
+	operator,operat_time,times,is_del)
+	values
+	(#{idcard},#{name},#{sort},#{birthday},#{sex},#{nation},#{unit},#{duties},#{title},
+	#{tel},#{telphone},#{major},#{work},#{specialty},#{address},#{degree},#{email},#{school},#{graduation},
+	#{awards},#{operator},#{operat_time},#{times},#{is_del})
+  </insert>
+  <select id="queryByIdcard" resultType="com.sino.pojo.Participant" parameterType="java.lang.String">
+  select id,idcard,name,sort,birthday,sex,nation,unit,duties,title,tel,telphone,major,work,
+	specialty,address,degree,email,school,graduation,awards,
+	operator,operat_time,times,is_del
+  from PR_BASE_PARTICIPANT where idcard = #{idcard} and is_del=0
+  </select>
+ </mapper>

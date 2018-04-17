@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrParticipantDao">
+  <resultMap id="ParticipantMap" type="com.sino.pojo.Participant">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="project_id" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="duties" jdbcType="VARCHAR" property="duties" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="major" jdbcType="VARCHAR" property="major" />
+    <result column="work" jdbcType="VARCHAR" property="work" />
+    <result column="specialty" jdbcType="VARCHAR" property="specialty" />    
+    <result column="address" jdbcType="VARCHAR" property="address" />    
+    <result column="degree" jdbcType="VARCHAR" property="degree" />    
+    <result column="email" jdbcType="VARCHAR" property="email" />    
+    <result column="school" jdbcType="VARCHAR" property="school" />    
+    <result column="graduation" jdbcType="TIMESTAMP" property="graduation" />    
+    <result column="awards" jdbcType="VARCHAR" property="awards" />    
+    <result column="star_time" jdbcType="TIMESTAMP" property="star_time" />    
+    <result column="end_time" jdbcType="TIMESTAMP" property="end_time" />    
+    <result column="contribution" jdbcType="VARCHAR" property="contribution" />    
+    <result column="operator" jdbcType="VARCHAR" property="operator" />    
+    <result column="operat_time" jdbcType="TIMESTAMP" property="operat_time" />
+     <result column="times" jdbcType="TIMESTAMP" property="times" />
+     <result column="is_del" jdbcType="INTEGER" property="is_del" />   
+  </resultMap>
+  <insert id="insert" parameterType="com.sino.pojo.Participant" >     
+	insert into PR_PARTICIPANT
+	(project_id,idcard,name,sort,birthday,sex,nation,unit,duties,title,tel,telphone,major,work,
+	specialty,address,degree,email,school,graduation,awards,star_time,end_time,contribution,
+	operator,operat_time,times,is_del)
+	values
+	(#{project_id},#{idcard},#{name},#{sort},#{birthday},#{sex},#{nation},#{unit},#{duties},#{title},
+	#{tel},#{telphone},#{major},#{work},#{specialty},#{address},#{degree},#{email},#{school},#{graduation},
+	#{awards},#{star_time},#{end_time},#{contribution},#{operator},#{operat_time},#{times},#{is_del})
+  </insert>
+  <select id="queryByProjectId" resultType="java.util.HashMap"  parameterType="com.sino.pojo.Participant">
+  select id,project_id,decodeIdCard(decode(idcard,#{salt})) as idcard,name,sort,birthday,sex,nation,unit,duties,title,tel,telphone,major,work,
+	specialty,address,degree,email,school,graduation,awards,star_time,end_time,contribution,
+	operator,operat_time,times,is_del
+  from PR_PARTICIPANT where project_id = #{project_id} and is_del=0 order by sort asc
+  </select>
+    <select id="queryByProjectIdAndIdcard" resultMap="ParticipantMap" parameterType="com.sino.pojo.Participant">
+  select id,project_id,idcard,name,sort,birthday,sex,nation,unit,duties,title,tel,telphone,major,work,
+	specialty,address,degree,email,school,graduation,awards,star_time,end_time,contribution,
+	operator,operat_time,times,is_del
+  from PR_PARTICIPANT where project_id = #{project_id} and idcard=#{idcard} and is_del=0 order by sort asc
+  </select>
+  <delete id="deletePart" parameterType="com.sino.pojo.Participant">
+  delete from PR_PARTICIPANT where project_id = #{project_id} and idcard=#{idcard}
+  </delete>
+  <update id="updateSort" parameterType="com.sino.pojo.Participant">
+  update PR_PARTICIPANT set sort=#{sort} where project_id = #{project_id} and idcard=#{idcard}
+  </update>
+ <update id="deleteFake" parameterType="com.sino.pojo.Participant">
+   update PR_PARTICIPANT set is_del=#{is_del} where project_id = #{project_id}
+ </update>
+ </mapper>

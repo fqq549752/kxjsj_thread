@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sino.dao.PrEnclosureDao">
+	<resultMap id="enclosureMap" type="com.sino.pojo.PrEnclosure">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="project_id" jdbcType="VARCHAR" property="project_id" />
+		<result column="file_name" jdbcType="VARCHAR" property="file_name" />
+		<result column="file_type" jdbcType="INTEGER" property="file_type" />
+		<result column="file_path" jdbcType="VARCHAR" property="file_path" />
+		<result column="snapshot_path" jdbcType="VARCHAR" property="snapshot_path" />
+		<result column="times" jdbcType="TIMESTAMP" property="times" />
+		<result column="is_del" jdbcType="VARCHAR" property="is_del" />
+	</resultMap>
+	<insert id="insert" parameterType="com.sino.pojo.PrEnclosure">
+		insert into PR_ENCLOSURE
+		(project_id,file_name,file_type,file_path,snapshot_path,times,is_del)
+		values
+		(#{project_id},#{file_name},#{file_type},#{file_path},#{snapshot_path},#{times},#{is_del})
+	</insert>
+
+	<select id="queryAllByProjectId" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select
+		id,project_id,file_name,file_type,file_path,snapshot_path,times,is_del
+		from PR_ENCLOSURE where project_id =#{project_id} and is_del=0 order
+		by file_type asc
+	</select>
+	<select id="queryAll" parameterType="java.lang.String"
+		resultMap="enclosureMap">
+		select
+		id,project_id,file_name,file_type,file_path,snapshot_path,times,is_del
+		from PR_ENCLOSURE where project_id =#{project_id} and is_del=0 order
+		by file_type asc
+	</select>
+	<update id="deleteFake">
+		update PR_ENCLOSURE set is_del =#{is_del} where
+		project_id=#{project_id}
+	</update>
+	<select id="queryByProjectIdAndType" parameterType="com.sino.pojo.PrEnclosure"
+		resultMap="enclosureMap">
+		select
+		id,project_id,file_name,file_type,file_path,snapshot_path,times,is_del
+		from PR_ENCLOSURE where project_id =#{project_id} and
+		file_type=#{file_type}
+		<if test="file_name !='' and file_name !=null ">
+			and file_name =#{file_name}
+		</if>
+		and is_del=0
+	</select>
+	<delete id="deleteEnclo" parameterType="com.sino.pojo.PrEnclosure">
+		delete from PR_ENCLOSURE where project_id =#{project_id} and
+		file_type=#{file_type}
+		<if test="file_name !='' and file_name !=null">
+			and file_name=#{file_name}
+		</if>
+	</delete>
+</mapper>
